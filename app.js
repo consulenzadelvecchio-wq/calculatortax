@@ -194,3 +194,41 @@ function bind(){
 }
 updatePdfDate();
 bind(); syncModeUI();
+
+
+// ===== Mobile tabs =====
+(function(){
+  const tabDati = document.getElementById("tabDati");
+  const tabRis = document.getElementById("tabRisultati");
+
+  function setView(view){
+    document.body.setAttribute("data-view", view);
+    if(tabDati && tabRis){
+      tabDati.classList.toggle("active", view==="dati");
+      tabRis.classList.toggle("active", view==="risultati");
+    }
+  }
+
+  function isMobile(){
+    return window.matchMedia && window.matchMedia("(max-width: 900px)").matches;
+  }
+
+  // default view
+  if(isMobile()) setView("dati"); else document.body.removeAttribute("data-view");
+
+  tabDati && tabDati.addEventListener("click", ()=>setView("dati"));
+  tabRis && tabRis.addEventListener("click", ()=>setView("risultati"));
+
+  // when switching to risultati, ensure latest render is visible
+  tabRis && tabRis.addEventListener("click", ()=>{ try{ render(); }catch(e){} });
+
+  window.addEventListener("resize", ()=>{
+    if(isMobile()){
+      if(!document.body.getAttribute("data-view")) setView("dati");
+    }else{
+      document.body.removeAttribute("data-view");
+      if(tabDati && tabRis){ tabDati.classList.add("active"); tabRis.classList.remove("active"); }
+    }
+  });
+})();
+

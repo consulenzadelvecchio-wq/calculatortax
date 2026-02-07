@@ -157,3 +157,53 @@ body{
   /* page */
   @page{ size:A4; margin:14mm; }
 }
+
+/* ===== Mobile UX (iPhone) ===== */
+.mobile-tabs{display:none}
+@media (max-width: 900px){
+  .topbar{padding:14px 14px}
+  .logo{width:40px;height:40px;border-radius:14px}
+  .title{font-size:15px}
+  .top-actions .btn{padding:10px 10px}
+  .wrap{padding:12px}
+  .card{padding:14px}
+  .kpi-value{font-size:22px}
+  .mini-value{font-size:18px}
+  .field input,.field select{padding:12px 12px; font-size:16px} /* 16px evita zoom iOS */
+  .btn{font-size:14px}
+  .mobile-tabs{
+    display:flex;
+    position:sticky;
+    top:64px;
+    z-index:9;
+    gap:10px;
+    padding:10px 12px;
+    background:rgba(0,0,0,.14);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,.10);
+  }
+  .mobile-tabs .tab{
+    flex:1;
+    padding:12px 12px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.16);
+    background:rgba(255,255,255,.08);
+    color:rgba(255,255,255,.90);
+    font-weight:950;
+    cursor:pointer;
+  }
+  .mobile-tabs .tab.active{
+    background:rgba(125,211,252,.16);
+    border-color:rgba(125,211,252,.35);
+  }
+
+  /* In mobile, show one card at a time */
+  .wrap{grid-template-columns:1fr !important}
+  body[data-view="dati"] #outputCard{display:none}
+  body[data-view="risultati"] #inputCard{display:none}
+
+  /* Make results easier to scan */
+  .kpi-grid{grid-template-columns:1fr !important}
+  .mini-grid{grid-template-columns:1fr 1fr !important}
+  .mini-grid.iva3{grid-template-columns:1fr !important}
+}

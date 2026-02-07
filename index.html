@@ -31,20 +31,25 @@
     </div>
   </header>
 
+  <nav class="mobile-tabs" aria-label="Navigazione">
+    <button class="tab active" id="tabDati" type="button">Dati</button>
+    <button class="tab" id="tabRisultati" type="button">Risultati</button>
+  </nav>
+
   <main class="wrap">
-    <section class="card input" aria-label="Dati">
+    <section class="card input" id="inputCard" aria-label="Dati">
       <h2>Dati</h2>
 
       <div class="grid">
         <div class="field">
           <label for="qty">Quantità</label>
-          <input id="qty" inputmode="numeric" value="1" />
+          <input type="number" step="1" id="qty" inputmode="numeric" value="1" />
           <div class="hint">Numero pezzi</div>
         </div>
 
         <div class="field">
           <label for="vat">Aliquota IVA (%)</label>
-          <input id="vat" inputmode="decimal" value="22" />
+          <input type="number" step="0.01" id="vat" inputmode="decimal" value="22" />
           <div class="hint">Es. 22 / 10 / 4</div>
         </div>
       </div>
@@ -57,7 +62,7 @@
         <div class="field">
           <label for="neutralCost">Costo prodotto neutro</label>
           <div class="row2">
-            <input id="neutralCost" inputmode="decimal" placeholder="0,00" value="0" />
+            <input type="number" step="0.01" id="neutralCost" inputmode="decimal" placeholder="0,00" value="0" />
             <select id="neutralMode" aria-label="Modalità costo neutro">
               <option>IVA incl.</option>
               <option>IVA escl.</option>
@@ -76,7 +81,7 @@
         <div class="field">
           <label for="persCost">Costo personalizzazione</label>
           <div class="row2">
-            <input id="persCost" inputmode="decimal" placeholder="0,00" value="0" />
+            <input type="number" step="0.01" id="persCost" inputmode="decimal" placeholder="0,00" value="0" />
             <select id="persMode" aria-label="Modalità costo personalizzazione">
               <option>IVA incl.</option>
               <option>IVA escl.</option>
@@ -120,7 +125,7 @@
         <div class="grid">
           <div class="field">
             <label for="profit">Guadagno desiderato €</label>
-            <input id="profit" inputmode="decimal" value="50" />
+            <input type="number" step="0.01" id="profit" inputmode="decimal" value="50" />
             <div class="hint">Guadagno “pulito” prima delle imposte (IRPEF/IRES)</div>
           </div>
           <div class="field">
@@ -135,7 +140,7 @@
         <div class="grid">
           <div class="field">
             <label for="simPrice">Prezzo applicato</label>
-            <input id="simPrice" inputmode="decimal" value="0" />
+            <input type="number" step="0.01" id="simPrice" inputmode="decimal" value="0" />
             <div class="hint">Inserisci il prezzo e vedi guadagno + IVA</div>
           </div>
           <div class="field">
@@ -156,7 +161,7 @@
       </div>
     </section>
 
-    <section class="card output" aria-label="Risultati">
+    <section class="card output" id="outputCard" aria-label="Risultati">
       <div class="output-head">
         <div class="head-left">
           <h2>Risultati (totale)</h2>

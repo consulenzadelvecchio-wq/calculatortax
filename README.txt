@@ -1,4 +1,4 @@
-Calcolatore Prezzo + IVA — iPhone (PWA) v1
+Calcolatore Prezzo + IVA — iPhone (PWA) v2
 
 QUESTA VERSIONE È INSTALLABILE SU iPHONE (come app).
 Funziona anche OFFLINE dopo il primo avvio.
@@ -11,3 +11,7 @@ COME METTERLA SU iPHONE:
 
 NOTA: da file locale (file://) iOS NON permette l'installazione come app.
 Serve un URL https.
+
+
+MOBILE:
+- Ottimizzata per iPhone con due tab (Dati / Risultati). Su desktop resta a due colonne.
