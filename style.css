@@ -1,0 +1,159 @@
+:root{
+  --bg:#0b0c10; --card:rgba(255,255,255,.06); --card2:rgba(255,255,255,.08);
+  --text:rgba(255,255,255,.92); --muted:rgba(255,255,255,.65); --line:rgba(255,255,255,.14);
+  --shadow:0 10px 30px rgba(0,0,0,.45); --radius:18px; --radius2:14px; --pad:16px;
+}
+
+/* Fix leggibilità numeri nei campi (Safari/Chrome su macOS) */
+html{ color-scheme: dark; }
+.field input, .field select{
+  color: var(--text) !important;
+  caret-color: var(--text);
+}
+.field input::placeholder{ color: rgba(255,255,255,.38); }
+/* Autofill (giallo/nero) */
+.field input:-webkit-autofill,
+.field input:-webkit-autofill:hover,
+.field input:-webkit-autofill:focus,
+.field input:-webkit-autofill:active{
+  -webkit-text-fill-color: var(--text) !important;
+  transition: background-color 9999s ease-in-out 0s;
+  box-shadow: 0 0 0px 1000px rgba(0,0,0,.25) inset;
+}
+
+*{box-sizing:border-box} html,body{height:100%}
+body{
+  margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  color:var(--text);
+  background:
+    radial-gradient(1200px 600px at 10% 0%, rgba(125,211,252,.20), transparent 55%),
+    radial-gradient(900px 600px at 100% 25%, rgba(167,139,250,.16), transparent 60%),
+    radial-gradient(900px 700px at 30% 100%, rgba(134,239,172,.12), transparent 60%),
+    var(--bg);
+}
+.topbar{
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:18px 22px; border-bottom:1px solid var(--line);
+  background:rgba(0,0,0,.18); backdrop-filter:blur(10px);
+  position:sticky; top:0; z-index:10;
+}
+.brand{display:flex; align-items:center; gap:12px; min-width:280px}
+.logo{
+  width:44px; height:44px; border-radius:14px; display:grid; place-items:center;
+  background:linear-gradient(135deg, rgba(125,211,252,.35), rgba(167,139,250,.22));
+  border:1px solid rgba(255,255,255,.18); box-shadow:var(--shadow); font-weight:800;
+}
+.title{font-size:16px; font-weight:800; letter-spacing:.2px}
+.subtitle{font-size:12.5px; color:var(--muted); max-width:74ch}
+.top-actions{display:flex; gap:10px; align-items:center}
+.btn{
+  border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.10); color:var(--text);
+  padding:10px 12px; border-radius:14px; font-weight:800; cursor:pointer;
+  transition:transform .08s ease, background .15s ease, border-color .15s ease; user-select:none;
+}
+.btn:hover{background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.22)}
+.btn:active{transform:translateY(1px)} .btn.ghost{background:transparent}
+.wrap{
+  display:grid; grid-template-columns:minmax(320px,1fr) minmax(440px,1.12fr);
+  gap:16px; padding:16px; max-width:1400px; margin:0 auto;
+}
+.card{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:var(--pad);
+}
+.card h2{margin:0 0 12px; font-size:16px}
+.card h3{margin:16px 0 10px; font-size:13px; color:rgba(255,255,255,.85)}
+.grid{display:grid; grid-template-columns:repeat(2,minmax(220px,1fr)); gap:12px}
+.grid2{display:grid; grid-template-columns:repeat(2,minmax(260px,1fr)); gap:12px}
+.field label{display:block; font-size:12.5px; margin-bottom:6px; font-weight:800}
+.field input,.field select{
+  width:100%; padding:11px 12px; border-radius:14px; border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.06); color:var(--text); outline:none;
+}
+.field input:focus,.field select:focus{border-color:rgba(125,211,252,.55); box-shadow:0 0 0 3px rgba(125,211,252,.15)}
+.hint{margin-top:6px; font-size:12px; color:var(--muted)}
+.divider{height:1px; background:var(--line); margin:14px 0}
+.divider.small{margin:10px 0}
+.note{
+  border:1px dashed rgba(255,255,255,.18); background:rgba(0,0,0,.20);
+  border-radius:var(--radius2); padding:10px 12px; color:var(--muted); font-size:12.5px;
+}
+.box{
+  border:1px solid rgba(255,255,255,.14); background:rgba(0,0,0,.14);
+  border-radius:var(--radius2); padding:12px;
+}
+.hidden{display:none}
+.output-head{display:flex; align-items:center; justify-content:space-between; gap:10px}
+.pill{padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.10); font-size:12px; font-weight:900}
+.kpi-grid{display:grid; grid-template-columns:repeat(3,minmax(190px,1fr)); gap:12px; margin-top:10px}
+.kpi{background:var(--card2); border:1px solid rgba(255,255,255,.14); border-radius:var(--radius2); padding:12px}
+.kpi-label{font-size:12px; color:var(--muted); font-weight:800}
+.kpi-value{font-size:20px; font-weight:950; margin-top:6px}
+.kpi-sub{font-size:12px; color:var(--muted); margin-top:2px}
+.mini-grid{display:grid; grid-template-columns:repeat(4,minmax(160px,1fr)); gap:10px}
+.mini-grid.iva3{grid-template-columns:repeat(3,minmax(180px,1fr));}
+.mini{background:rgba(0,0,0,.16); border:1px solid rgba(255,255,255,.14); border-radius:var(--radius2); padding:10px 12px}
+.mini.emph{background:rgba(134,239,172,.10); border-color:rgba(134,239,172,.28)}
+.mini-label{font-size:12px; color:var(--muted); font-weight:800}
+.mini-value{font-size:16px; font-weight:950; margin-top:6px}
+.details{border:1px solid rgba(255,255,255,.14); border-radius:var(--radius2); padding:10px 12px; background:rgba(0,0,0,.16)}
+.details summary{cursor:pointer; font-weight:900; color:rgba(255,255,255,.9)}
+.table{border:1px solid rgba(255,255,255,.14); border-radius:var(--radius2); overflow:hidden; margin-top:10px}
+.tr{display:grid; grid-template-columns:1fr auto; gap:10px; padding:10px 12px; background:rgba(0,0,0,.18); border-bottom:1px solid rgba(255,255,255,.08)}
+.tr:nth-child(2n){background:rgba(0,0,0,.12)} .tr:last-child{border-bottom:none}
+.td{font-size:12.5px} .td.muted{color:var(--muted); font-weight:800}
+.td.right{text-align:right; font-variant-numeric:tabular-nums}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Courier New",monospace}
+.footer{padding:14px 16px 22px; color:rgba(255,255,255,.55); font-size:12px; text-align:center}
+.toast{
+  position:fixed; bottom:18px; left:50%; transform:translateX(-50%);
+  padding:10px 12px; border-radius:999px; background:rgba(0,0,0,.6);
+  border:1px solid rgba(255,255,255,.18); color:rgba(255,255,255,.9);
+  box-shadow:var(--shadow); opacity:0; pointer-events:none;
+  transition:opacity .18s ease, transform .18s ease;
+}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(-2px)}
+@media (max-width:1150px){
+  .wrap{grid-template-columns:1fr}
+  .kpi-grid{grid-template-columns:1fr}
+  .mini-grid{grid-template-columns:1fr 1fr}
+  .mini-grid.iva3{grid-template-columns:1fr}
+  .grid,.grid2{grid-template-columns:1fr}
+    .subtitle{display:none}
+}
+@media (max-width:520px){
+  }
+
+.row2{display:grid; grid-template-columns:1fr 140px; gap:10px; align-items:center}
+.row-under{display:grid; grid-template-columns:160px 1fr; gap:10px; align-items:start; margin-top:10px}
+.row-under select{width:100%}
+
+/* Extra: numeri sempre leggibili */
+.field input{font-weight:900; letter-spacing:.2px; -webkit-text-fill-color: var(--text) !important;}
+
+/* Header layout (Risultati) */
+.head-left{display:flex; flex-direction:column; gap:4px}
+.head-right{display:flex; align-items:center; gap:10px}
+.print-meta{font-size:12px; color:rgba(255,255,255,.55)}
+
+/* Profit badge colors (set via JS) */
+.pill.good{border-color:rgba(134,239,172,.45) !important; background:rgba(134,239,172,.10) !important;}
+.pill.warn{border-color:rgba(251,191,36,.55) !important; background:rgba(251,191,36,.10) !important;}
+.pill.bad{border-color:rgba(248,113,113,.55) !important; background:rgba(248,113,113,.12) !important;}
+
+/* ===== Print / PDF ===== */
+@media print{
+  :root{ --bg:#ffffff; --text:#000000; --muted:rgba(0,0,0,.62); --line:rgba(0,0,0,.18); --card:rgba(255,255,255,1); --card2:rgba(255,255,255,1); }
+  body{ background:#ffffff !important; color:#000 !important; }
+  .topbar, .input, .toast, .footer{ display:none !important; }
+  .wrap{ grid-template-columns: 1fr !important; padding:0 !important; max-width:none !important; }
+  .card{ box-shadow:none !important; border:1px solid rgba(0,0,0,.15) !important; border-radius:14px !important; }
+  .kpi, .mini, .details{ background:#fff !important; }
+  .kpi-label, .mini-label, .print-meta, .kpi-sub, .hint{ color:rgba(0,0,0,.65) !important; }
+  .kpi-value, .mini-value{ color:#000 !important; }
+  .pill{ color:#000 !important; border:1px solid rgba(0,0,0,.25) !important; background:#f3f4f6 !important; }
+  .details summary{ color:#000 !important; }
+  #checkLine{ color:rgba(0,0,0,.75) !important; }
+  /* page */
+  @page{ size:A4; margin:14mm; }
+}

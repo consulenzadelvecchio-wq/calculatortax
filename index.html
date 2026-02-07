@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Calcolatore Prezzo + IVA</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0b0c10" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Calcolatore IVA" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">€</div>
+      <div>
+        <div class="title">Calcolatore Prezzo + IVA</div>
+        <div class="subtitle">Prezzo totale + prezzo per singolo pezzo, IVA da scaricare/versare e guadagno netto IVA.</div>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <button id="resetBtn" class="btn ghost" title="Azzera tutti i campi">Reset</button>
+      <button id="copyBtn" class="btn" title="Copia un riepilogo pronto da inviare">Copia riepilogo</button>
+      <button id="pdfBtn" class="btn" title="Esporta in PDF (Stampa → Salva come PDF)">Esporta PDF</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="card input" aria-label="Dati">
+      <h2>Dati</h2>
+
+      <div class="grid">
+        <div class="field">
+          <label for="qty">Quantità</label>
+          <input id="qty" inputmode="numeric" value="1" />
+          <div class="hint">Numero pezzi</div>
+        </div>
+
+        <div class="field">
+          <label for="vat">Aliquota IVA (%)</label>
+          <input id="vat" inputmode="decimal" value="22" />
+          <div class="hint">Es. 22 / 10 / 4</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h3>Costi (neutro + personalizzazione)</h3>
+
+      <div class="grid2">
+        <div class="field">
+          <label for="neutralCost">Costo prodotto neutro</label>
+          <div class="row2">
+            <input id="neutralCost" inputmode="decimal" placeholder="0,00" value="0" />
+            <select id="neutralMode" aria-label="Modalità costo neutro">
+              <option>IVA incl.</option>
+              <option>IVA escl.</option>
+              <option>Nero</option>
+            </select>
+          </div>
+          <div class="row-under">
+            <select id="neutralBasis" aria-label="Base costo neutro">
+              <option value="unit">al pezzo</option>
+              <option value="total">totale</option>
+            </select>
+            <div class="hint">Se selezioni “totale”, il programma divide automaticamente per la quantità.</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="persCost">Costo personalizzazione</label>
+          <div class="row2">
+            <input id="persCost" inputmode="decimal" placeholder="0,00" value="0" />
+            <select id="persMode" aria-label="Modalità costo personalizzazione">
+              <option>IVA incl.</option>
+              <option>IVA escl.</option>
+              <option>Nero</option>
+            </select>
+          </div>
+          <div class="row-under">
+            <select id="persBasis" aria-label="Base costo personalizzazione">
+              <option value="unit">al pezzo</option>
+              <option value="total">totale</option>
+            </select>
+            <div class="hint">Utile se ti fanno un prezzo unico per tutta la lavorazione.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h3>Modalità</h3>
+
+      <div class="grid">
+        <div class="field">
+          <label for="mode">Cosa vuoi fare?</label>
+          <select id="mode">
+            <option value="target">Quanto vuoi guadagnare</option>
+            <option value="simulate">Quanto lo hai venduto?</option>
+          </select>
+          <div class="hint">1) Inserisci il guadagno desiderato → calcola prezzo consigliato. 2) Inserisci il prezzo reale → calcola guadagno.</div>
+        </div>
+
+        <div class="field">
+          <label>&nbsp;</label>
+          <div class="hint">I risultati sono sempre mostrati come <strong>totali</strong>, ma sotto trovi anche il <strong>prezzo per pezzo</strong>.</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div id="targetBox" class="box">
+        <h3>Quanto vuoi guadagnare (netto IVA)</h3>
+        <div class="grid">
+          <div class="field">
+            <label for="profit">Guadagno desiderato €</label>
+            <input id="profit" inputmode="decimal" value="50" />
+            <div class="hint">Guadagno “pulito” prima delle imposte (IRPEF/IRES)</div>
+          </div>
+          <div class="field">
+            <label>&nbsp;</label>
+            <div class="hint">Il programma calcola automaticamente il prezzo di vendita necessario.</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="simulateBox" class="box hidden">
+        <h3>Quanto lo hai venduto?</h3>
+        <div class="grid">
+          <div class="field">
+            <label for="simPrice">Prezzo applicato</label>
+            <input id="simPrice" inputmode="decimal" value="0" />
+            <div class="hint">Inserisci il prezzo e vedi guadagno + IVA</div>
+          </div>
+          <div class="field">
+            <label for="simMode">Il prezzo inserito è</label>
+            <select id="simMode">
+              <option value="gross">IVA incl.</option>
+              <option value="net">IVA escl.</option>
+            </select>
+            <div class="hint">Se il cliente vede il prezzo finale, scegli IVA incl.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="note">
+        <strong>Nota:</strong> logica IVA per <em>regime ordinario</em> (IVA a credito vs IVA a debito). Se sei in forfettario, la parte IVA non si applica così.
+      </div>
+    </section>
+
+    <section class="card output" aria-label="Risultati">
+      <div class="output-head">
+        <div class="head-left">
+          <h2>Risultati (totale)</h2>
+          <div class="print-meta" id="printMeta">Preventivo • <span id="pdfDate">—</span></div>
+        </div>
+        <div class="head-right">
+          <div class="pill" id="statusPill">OK</div>
+          <div class="pill" id="profitBadge">—</div>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">Totale vendita (IVA escl.)</div>
+          <div class="kpi-value" id="totalSellNet">€ 0,00</div>
+          <div class="kpi-sub">imponibile totale</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Totale vendita (IVA incl.)</div>
+          <div class="kpi-value" id="totalSellGross">€ 0,00</div>
+          <div class="kpi-sub">prezzo finale totale</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Guadagno netto (IVA esclusa)</div>
+          <div class="kpi-value" id="netProfit">€ 0,00</div>
+          <div class="kpi-sub">margine totale</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h3>Prezzo per singolo prodotto</h3>
+      <div class="mini-grid">
+        <div class="mini">
+          <div class="mini-label">Prezzo (IVA escl.)</div>
+          <div class="mini-value" id="unitSellNet">€ 0,00</div>
+        </div>
+        <div class="mini">
+          <div class="mini-label">Prezzo (IVA incl.)</div>
+          <div class="mini-value" id="unitSellGross">€ 0,00</div>
+        </div>
+        <div class="mini">
+          <div class="mini-label">Costo al pezzo (IVA incl.)</div>
+          <div class="mini-value" id="unitCostGross">€ 0,00</div>
+        </div>
+        <div class="mini">
+          <div class="mini-label">Costo al pezzo (IVA escl.)</div>
+          <div class="mini-value" id="unitCostNet">€ 0,00</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h3>IVA (semplice)</h3>
+      <div class="mini-grid iva3">
+        <div class="mini emph">
+          <div class="mini-label">IVA da versare</div>
+          <div class="mini-value" id="vatToPay">€ 0,00</div>
+        </div>
+        <div class="mini">
+          <div class="mini-label">IVA scaricata (credito)</div>
+          <div class="mini-value" id="vatCredit">€ 0,00</div>
+        </div>
+        <div class="mini">
+          <div class="mini-label">IVA sulle vendite (debito)</div>
+          <div class="mini-value" id="vatOnSales">€ 0,00</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <details class="details">
+        <summary>Dettaglio costi (per pezzo)</summary>
+        <div class="table">
+          <div class="tr">
+            <div class="td muted">Neutro (netto / IVA / lordo)</div>
+            <div class="td right" id="neutralBreak">€ 0,00 / € 0,00 / € 0,00</div>
+          </div>
+          <div class="tr">
+            <div class="td muted">Personalizzazione (netto / IVA / lordo)</div>
+            <div class="td right" id="persBreak">€ 0,00 / € 0,00 / € 0,00</div>
+          </div>
+        </div>
+      </details>
+
+      <div class="divider small"></div>
+      <div class="hint mono" id="checkLine">—</div>
+
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Offline • Nessun dato inviato • Apri <span class="mono">index.html</span> per usarlo
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js");
+      });
+    }
+  </script>
+</body>
+</html>
