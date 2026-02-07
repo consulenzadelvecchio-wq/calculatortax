@@ -29,14 +29,12 @@
       <button id="copyBtn" class="btn" title="Copia un riepilogo pronto da inviare">Copia riepilogo</button>
       <button id="pdfBtn" class="btn" title="Esporta in PDF (Stampa → Salva come PDF)">Esporta PDF</button>
     </div>
+  
+    <div class="standalone-hint" id="standaloneHint">
+      Suggerimento: per usarla come app, apri in Safari → Condividi → <strong>Aggiungi a Home</strong>.
+    </div>
   </header>
-
-  <nav class="mobile-tabs" aria-label="Navigazione">
-    <button class="tab active" id="tabDati" type="button">Dati</button>
-    <button class="tab" id="tabRisultati" type="button">Risultati</button>
-  </nav>
-
-  <main class="wrap">
+<main class="wrap">
     <section class="card input" id="inputCard" aria-label="Dati">
       <h2>Dati</h2>
 
@@ -162,6 +160,11 @@
     </section>
 
     <section class="card output" id="outputCard" aria-label="Risultati">
+      <div class="quick-actions" id="quickActions">
+        <button id="pdfBtn2" class="btn" type="button">Esporta PDF</button>
+        <button id="copyBtn2" class="btn ghost" type="button">Copia riepilogo</button>
+      </div>
+
       <div class="output-head">
         <div class="head-left">
           <h2>Risultati (totale)</h2>
@@ -266,5 +269,20 @@
       });
     }
   </script>
+  <nav class="bottom-bar" aria-label="Navigazione">
+    <button class="btab active" id="btabDati" type="button" aria-label="Dati">
+      <span class="bicon" aria-hidden="true">✎</span>
+      <span class="blabel">Dati</span>
+    </button>
+    <button class="btab" id="btabRisultati" type="button" aria-label="Risultati">
+      <span class="bicon" aria-hidden="true">≡</span>
+      <span class="blabel">Risultati</span>
+    </button>
+    <button class="btab" id="btabPDF" type="button" aria-label="PDF">
+      <span class="bicon" aria-hidden="true">⤓</span>
+      <span class="blabel">PDF</span>
+    </button>
+  </nav>
+
 </body>
 </html>

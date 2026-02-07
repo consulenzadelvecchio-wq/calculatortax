@@ -12,8 +12,49 @@ unitCostNet:$("unitCostNet"),unitCostGross:$("unitCostGross"),
 vatOnSales:$("vatOnSales"),vatToPay:$("vatToPay"),vatCredit:$("vatCredit"),
 neutralBreak:$("neutralBreak"),persBreak:$("persBreak"),
 statusPill:$("statusPill"),profitBadge:$("profitBadge"),pdfDate:$("pdfDate"),checkLine:$("checkLine"),
-toast:$("toast"),copyBtn:$("copyBtn"),pdfBtn:$("pdfBtn"),resetBtn:$("resetBtn"),
+toast:$("toast"),copyBtn:$("copyBtn"),copyBtn2:$("copyBtn2"),pdfBtn:$("pdfBtn"),pdfBtn2:$("pdfBtn2"),resetBtn:$("resetBtn"),
 };
+// PWA standalone detection (iOS/Android)
+(function(){
+  const isStandalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone;
+  if(isStandalone) document.body.classList.add("standalone");
+})();
+
+// Persistenza dati (salva/recupera automaticamente)
+const STORAGE_KEY = "calcolatoreIVA_state_v1";
+function saveState(){
+  try{
+    const state = {
+      qty: els.qty.value, vat: els.vat.value,
+      neutralCost: els.neutralCost.value, neutralMode: els.neutralMode.value, neutralBasis: els.neutralBasis.value,
+      persCost: els.persCost.value, persMode: els.persMode.value, persBasis: els.persBasis.value,
+      mode: els.mode.value,
+      profit: els.profit.value,
+      simPrice: els.simPrice.value, simMode: els.simMode.value
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }catch(e){}
+}
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return;
+    const s = JSON.parse(raw);
+    if(s.qty!=null) els.qty.value=s.qty;
+    if(s.vat!=null) els.vat.value=s.vat;
+    if(s.neutralCost!=null) els.neutralCost.value=s.neutralCost;
+    if(s.neutralMode!=null) els.neutralMode.value=s.neutralMode;
+    if(s.neutralBasis!=null) els.neutralBasis.value=s.neutralBasis;
+    if(s.persCost!=null) els.persCost.value=s.persCost;
+    if(s.persMode!=null) els.persMode.value=s.persMode;
+    if(s.persBasis!=null) els.persBasis.value=s.persBasis;
+    if(s.mode!=null) els.mode.value=s.mode;
+    if(s.profit!=null) els.profit.value=s.profit;
+    if(s.simPrice!=null) els.simPrice.value=s.simPrice;
+    if(s.simMode!=null) els.simMode.value=s.simMode;
+  }catch(e){}
+}
+
 function toast(msg){els.toast.textContent=msg;els.toast.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>els.toast.classList.remove("show"),1600);}
 function parseEuro(s){if(!s)return 0;s=String(s).trim().replace("€","").replace(/\s+/g,"");const hasComma=s.includes(","),hasDot=s.includes(".");if(hasComma&&hasDot){s=s.replace(/\./g,"").replace(",",".");}else{s=s.replace(",",".");}const n=Number(s);return Number.isFinite(n)?n:NaN;}
 function fmtEUR(n){if(!Number.isFinite(n))return "—";return n.toLocaleString("it-IT",{style:"currency",currency:"EUR"});}
@@ -162,8 +203,12 @@ function bind(){
    els.persCost,els.persBasis,els.persMode,
    els.mode,els.profit,els.simPrice,els.simMode
  ];
- inputs.forEach(el=>el.addEventListener("input", render));
- inputs.forEach(el=>el.addEventListener("change", render));
+  // Quick actions (mobile) -> same funzioni
+  els.copyBtn2 && els.copyBtn2.addEventListener("click", ()=> els.copyBtn.click());
+  els.pdfBtn2 && els.pdfBtn2.addEventListener("click", ()=> (els.pdfBtn ? els.pdfBtn.click() : window.print()));
+
+ inputs.forEach(el=>el.addEventListener("input", ()=>{ render(); saveState(); }));
+ inputs.forEach(el=>el.addEventListener("change", ()=>{ render(); saveState(); }));
  els.mode.addEventListener("change", syncModeUI);
 
  els.copyBtn.addEventListener("click", async ()=>{
@@ -192,42 +237,49 @@ function bind(){
    syncModeUI(); toast("Reset fatto");
  });
 }
+loadState();
 updatePdfDate();
 bind(); syncModeUI();
+render();
 
 
-// ===== Mobile tabs =====
+
+
+
+// ===== Bottom bar (mobile) =====
 (function(){
-  const tabDati = document.getElementById("tabDati");
-  const tabRis = document.getElementById("tabRisultati");
+  const bDati = document.getElementById("btabDati");
+  const bRis = document.getElementById("btabRisultati");
+  const bPdf = document.getElementById("btabPDF");
 
   function setView(view){
     document.body.setAttribute("data-view", view);
-    if(tabDati && tabRis){
-      tabDati.classList.toggle("active", view==="dati");
-      tabRis.classList.toggle("active", view==="risultati");
-    }
+    bDati && bDati.classList.toggle("active", view==="dati");
+    bRis && bRis.classList.toggle("active", view==="risultati");
+    // pdf tab is a button action, not a view
   }
 
   function isMobile(){
     return window.matchMedia && window.matchMedia("(max-width: 900px)").matches;
   }
 
-  // default view
   if(isMobile()) setView("dati"); else document.body.removeAttribute("data-view");
 
-  tabDati && tabDati.addEventListener("click", ()=>setView("dati"));
-  tabRis && tabRis.addEventListener("click", ()=>setView("risultati"));
-
-  // when switching to risultati, ensure latest render is visible
-  tabRis && tabRis.addEventListener("click", ()=>{ try{ render(); }catch(e){} });
+  bDati && bDati.addEventListener("click", ()=>setView("dati"));
+  bRis && bRis.addEventListener("click", ()=>{ setView("risultati"); try{ render(); }catch(e){} });
+  bPdf && bPdf.addEventListener("click", ()=>{
+    // If on dati, switch to risultati first so PDF è bello
+    if(isMobile()) setView("risultati");
+    setTimeout(()=>{ try{ updatePdfDate(); window.print(); }catch(e){} }, 50);
+  });
 
   window.addEventListener("resize", ()=>{
     if(isMobile()){
       if(!document.body.getAttribute("data-view")) setView("dati");
     }else{
       document.body.removeAttribute("data-view");
-      if(tabDati && tabRis){ tabDati.classList.add("active"); tabRis.classList.remove("active"); }
+      bDati && bDati.classList.add("active");
+      bRis && bRis.classList.remove("active");
     }
   });
 })();

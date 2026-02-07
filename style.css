@@ -207,3 +207,91 @@ body{
   .mini-grid{grid-template-columns:1fr 1fr !important}
   .mini-grid.iva3{grid-template-columns:1fr !important}
 }
+
+/* ===== App-like iPhone feel ===== */
+:root{
+  --safe-top: env(safe-area-inset-top);
+  --safe-bottom: env(safe-area-inset-bottom);
+}
+body{
+  padding-top: var(--safe-top);
+  padding-bottom: calc(14px + var(--safe-bottom));
+}
+/* Standalone PWA tweaks */
+body.standalone .topbar{background:rgba(0,0,0,.22)}
+.standalone-hint{display:none; padding:10px 14px; border-bottom:1px solid rgba(255,255,255,.10); color:rgba(255,255,255,.7); font-size:12.5px}
+body:not(.standalone) .standalone-hint{display:block}
+
+/* Bottom nav (mobile only) */
+.bottom-bar{display:none}
+@media (max-width: 900px){
+  body{padding-bottom: calc(78px + var(--safe-bottom));}
+  .footer{display:none}
+  /* hide header action buttons to feel like app */
+  .top-actions{gap:8px}
+  .top-actions .btn{display:none}
+  .top-actions .btn:first-child{display:none}
+  /* show quick actions inside Results */
+  .quick-actions{display:flex; gap:10px; margin-bottom:12px}
+  .quick-actions .btn{flex:1; padding:12px 12px; border-radius:16px}
+  .quick-actions .btn.ghost{border-color:rgba(255,255,255,.14)}
+  /* bottom bar */
+  .bottom-bar{
+    display:flex;
+    position:fixed;
+    left:0; right:0;
+    bottom:0;
+    padding:10px 12px calc(10px + var(--safe-bottom));
+    gap:10px;
+    background:rgba(0,0,0,.40);
+    backdrop-filter: blur(18px);
+    border-top:1px solid rgba(255,255,255,.10);
+    z-index:50;
+  }
+  .btab{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    padding:10px 8px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.14);
+    background:rgba(255,255,255,.06);
+    color:rgba(255,255,255,.9);
+    font-weight:900;
+  }
+  .btab.active{
+    background:rgba(125,211,252,.16);
+    border-color:rgba(125,211,252,.35);
+  }
+  .bicon{font-size:18px; line-height:18px}
+  .blabel{font-size:12px}
+
+  /* one-card view */
+  .wrap{grid-template-columns:1fr !important}
+  body[data-view="dati"] #outputCard{display:none}
+  body[data-view="risultati"] #inputCard{display:none}
+
+  /* nicer spacing and big numbers */
+  .kpi-value{font-size:26px}
+  .mini-value{font-size:18px}
+  .kpi{border-radius:18px}
+  .mini{border-radius:18px}
+  .card{border-radius:22px}
+}
+
+/* subtle transitions when switching tabs */
+@media (max-width:900px){
+  #inputCard, #outputCard{
+    animation: fadeIn .16s ease;
+  }
+}
+@keyframes fadeIn{
+  from{opacity:.4; transform:translateY(4px)}
+  to{opacity:1; transform:translateY(0)}
+}
+
+/* quick actions hidden on desktop */
+.quick-actions{display:none}
